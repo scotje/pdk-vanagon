@@ -71,6 +71,11 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{mod_name}/Gemfile"
 
+    # We still don't have a working devkit environment on Windows even during packaging, need to resolve that before adding byebug on windows.
+    unless platform.is_windows?
+      build_commands << "echo 'gem \"pry-byebug\",                               require: false' >> #{mod_name}/Gemfile"
+    end
+
     # Run 'bundle install' in the generated module to cache the gems
     # inside the project cachedir.
     build_commands << "pushd #{mod_name} && GEM_PATH=\"#{gem_path_with_puppet_cache}\" GEM_HOME=\"#{ruby_cachedir}\" #{settings[:host_bundle]} install && popd"
@@ -84,6 +89,9 @@ component "pdk-templates" do |pkg, settings, platform|
       # at runtime, we just purge it before attempting to package.
       build_commands << "/usr/bin/find #{ruby_cachedir} -regextype posix-extended -regex '.*/puppet-[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^/]*/spec/.*' -delete"
     end
+
+    # Install an old version of json in case they add beaker to their Gemfile.
+    build_commands << "GEM_HOME=#{ruby_cachedir} #{settings[:host_gem]} install json --version 1.8.6 --no-document"
 
     # Bundle install for each additional ruby version as well, in case we need different versions for a different ruby.
     settings[:additional_rubies]&.each do |rubyver, local_settings|
@@ -108,8 +116,11 @@ component "pdk-templates" do |pkg, settings, platform|
       build_commands << "echo 'gem \"puppet-debugger\",                            require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"guard\",                                      require: false' >> #{local_mod_name}/Gemfile"
 
-      # This pin is needed to ensure Ruby 2.1.9 compat still
+      # These pins are needed to ensure Ruby 2.1.9 compat still
       build_commands << "echo 'gem \"listen\", \"~> 3.0.8\",                       require: false' >> #{local_mod_name}/Gemfile"
+      unless platform.is_windows?
+        build_commands << "echo 'gem \"pry-byebug\", \"~> 3.4.3\",                 require: false' >> #{local_mod_name}/Gemfile"
+      end
 
       build_commands << "echo 'gem \"puppet-strings\",                             require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{local_mod_name}/Gemfile"
@@ -124,13 +135,18 @@ component "pdk-templates" do |pkg, settings, platform|
       # Prepend native gem installation commands for this ruby
       pre_build_commands << "GEM_HOME=#{local_ruby_cachedir} #{local_settings[:gem_install]} ../mini_portile2-#{settings[:mini_portile2_version]}.gem"
 
+      # Install nokogiri into alternate rubies as well.
+      if platform.is_windows?
+        pre_build_commands << "GEM_HOME=#{local_ruby_cachedir} #{local_settings[:gem_install]} ../nokogiri-#{settings[:nokogiri_version]}-x64-mingw32.gem"
+      else
+        pre_build_commands << "GEM_HOME=#{local_ruby_cachedir} #{local_settings[:gem_install]} ../nokogiri-#{settings[:nokogiri_version]}.gem"
+      end
+
       if platform.is_windows?
         # The puppet gem has files in it's 'spec' directory with very long paths which
         # bump up against MAX_PATH on Windows. Since the 'spec' directory is not required
         # at runtime, we just purge it before attempting to package.
         build_commands << "/usr/bin/find #{local_ruby_cachedir} -regextype posix-extended -regex '.*/puppet-[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[^/]*/spec/.*' -delete"
-
-        pre_build_commands << "GEM_HOME=#{local_ruby_cachedir} #{local_settings[:gem_install]} ../nokogiri-#{settings[:nokogiri_version]}-x64-mingw32.gem"
       end
     end
 
