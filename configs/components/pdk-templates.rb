@@ -84,6 +84,7 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "echo 'gem \"listen\",                                     require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{mod_name}/Gemfile"
+    build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{mod_name}/Gemfile"
 
     # Add some Beaker dependencies for Linux
     unless platform.is_windows?
@@ -144,6 +145,7 @@ component "pdk-templates" do |pkg, settings, platform|
       build_commands << "echo 'gem \"puppet-strings\",                             require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{local_mod_name}/Gemfile"
+      build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{local_mod_name}/Gemfile" unless rubyver.start_with?('2.1')
       build_commands << "echo 'gem \"nokogiri\", \"<= #{settings[:nokogiri_version]}\",                     require: false' >> #{local_mod_name}/Gemfile"
 
       # Add some Beaker dependencies for Linux
