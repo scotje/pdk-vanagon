@@ -45,8 +45,8 @@ project "pdk" do |proj|
   proj.setting(:rubygems_url, "#{proj.artifactory_url}/rubygems/gems")
 
   proj.setting(:bundler_version, "1.16.1")
-  proj.setting(:mini_portile2_version, '2.3.0')
-  proj.setting(:nokogiri_version, '1.8.5')
+  proj.setting(:mini_portile2_version, '2.4.0')
+  proj.setting(:nokogiri_version, '1.10.3')
 
   proj.setting(:cachedir, File.join(proj.datadir, "cache"))
 
