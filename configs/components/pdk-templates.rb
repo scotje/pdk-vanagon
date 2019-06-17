@@ -78,6 +78,7 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "cp #{mod_name}/Gemfile.lock #{settings[:cachedir]}/Gemfile-#{settings[:ruby_version]}.lock"
     build_commands << "cp #{mod_name}/Gemfile.lock #{settings[:cachedir]}/Gemfile.lock"
 
+    ruby_minor = settings[:ruby_version].split('.')[0..1].join('.')
     # Add some additional gems to support experimental features
     build_commands << "echo 'gem \"puppet-debugger\",                            require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"guard\",                                      require: false' >> #{mod_name}/Gemfile"
@@ -85,6 +86,8 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{mod_name}/Gemfile"
+    build_commands << "echo 'gem \"puppet-module-posix-system-r#{ruby_minor}\", platform: [:ruby]' >> #{mod_name}/Gemfile"
+    build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{mod_name}/Gemfile"
 
     # Add some Beaker dependencies for Linux
     unless platform.is_windows?
@@ -146,6 +149,9 @@ component "pdk-templates" do |pkg, settings, platform|
       build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{local_mod_name}/Gemfile" unless rubyver.start_with?('2.1')
+      ruby_minor = local_settings[:ruby_version].split('.')[0..1].join('.')
+      build_commands << "echo 'gem \"puppet-module-posix-system-r#{ruby_minor}\", platform: [:ruby]' >> #{local_mod_name}/Gemfile"
+      build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"nokogiri\", \"<= #{settings[:nokogiri_version]}\",                     require: false' >> #{local_mod_name}/Gemfile"
 
       # Add some Beaker dependencies for Linux
