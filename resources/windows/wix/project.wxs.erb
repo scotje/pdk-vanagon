@@ -28,7 +28,7 @@
     <Directory Id='TARGETDIR' Name='SourceDir' />
 
     <MajorUpgrade AllowDowngrades="yes" />
-    <MediaTemplate CabinetTemplate="<%= settings[:product_id] %>{0}.cab" EmbedCab="yes" CompressionLevel="high" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <Feature
       Id="<%= settings[:product_id] %>Runtime"
