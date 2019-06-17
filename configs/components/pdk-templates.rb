@@ -80,6 +80,7 @@ component "pdk-templates" do |pkg, settings, platform|
 
     ruby_minor = settings[:ruby_version].split('.')[0..1].join('.')
     # Add some additional gems to support experimental features
+    build_commands << "echo 'gem \"puppet-lint-i18n\", require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"puppet-debugger\",                            require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"guard\",                                      require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"listen\",                                     require: false' >> #{mod_name}/Gemfile"
@@ -145,6 +146,7 @@ component "pdk-templates" do |pkg, settings, platform|
       # This pin is needed to ensure Ruby 2.1.9 compat still
       build_commands << "echo 'gem \"listen\", \"~> 3.0.8\",                       require: false' >> #{local_mod_name}/Gemfile"
 
+      build_commands << "echo 'gem \"puppet-lint-i18n\", require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"puppet-strings\",                             require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{local_mod_name}/Gemfile"
