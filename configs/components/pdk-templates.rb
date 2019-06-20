@@ -99,7 +99,7 @@ component "pdk-templates" do |pkg, settings, platform|
 
     # Run 'bundle install' in the generated module to cache the gems
     # inside the project cachedir.
-    build_commands << "pushd #{mod_name} && #{gem_env.join(' ')} #{settings[:host_bundle]} install && popd"
+    build_commands << "pushd #{mod_name} && #{gem_env.join(' ')} #{settings[:host_bundle]} update && popd"
 
     # Install bundler into the gem cache
     build_commands << "#{gem_env.join(' ')} #{settings[:host_gem]} install --no-document --local --bindir /tmp ../bundler-#{settings[:bundler_version]}.gem"
@@ -135,6 +135,7 @@ component "pdk-templates" do |pkg, settings, platform|
       build_commands << "#{pdk_bin} new module #{local_mod_name} --skip-interview --template-url=file:///#{File.join(settings[:cachedir], 'pdk-templates.git')}"
 
       # Resolve default gemfile deps
+      # TODO: maybe `bundle lock --update` at this step?
       build_commands << "pushd #{local_mod_name} && #{local_gem_env.join(' ')} #{local_settings[:host_bundle]} update && popd"
 
       build_commands << "mv #{local_mod_name}/Gemfile.lock #{settings[:cachedir]}/Gemfile-#{rubyver}.lock"
@@ -164,7 +165,7 @@ component "pdk-templates" do |pkg, settings, platform|
       end
 
       # Install all the deps into the package cachedir.
-      build_commands << "pushd #{local_mod_name} && #{local_gem_env.join(' ')} #{local_settings[:host_bundle]} install && popd"
+      build_commands << "pushd #{local_mod_name} && #{local_gem_env.join(' ')} #{local_settings[:host_bundle]} update && popd"
 
       # Install bundler itself into the gem cache for this ruby
       build_commands << "#{local_gem_env.join(' ')} #{local_settings[:host_gem]} install --no-document --local --bindir /tmp ../bundler-#{settings[:bundler_version]}.gem"
