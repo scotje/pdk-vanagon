@@ -86,7 +86,6 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "echo 'gem \"listen\",                                     require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{mod_name}/Gemfile"
-    build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"puppet-module-posix-system-r#{ruby_minor}\", platform: [:ruby]' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{mod_name}/Gemfile"
 
