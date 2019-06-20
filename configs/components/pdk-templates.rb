@@ -87,12 +87,12 @@ component "pdk-templates" do |pkg, settings, platform|
     build_commands << "echo 'gem \"codecov\",                                    require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"license_finder\",                             require: false' >> #{mod_name}/Gemfile"
     build_commands << "echo 'gem \"puppet-module-posix-system-r#{ruby_minor}\", platform: [:ruby]' >> #{mod_name}/Gemfile"
-    build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{mod_name}/Gemfile"
+    #build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{mod_name}/Gemfile"
 
     # Add some Beaker dependencies for Linux
     unless platform.is_windows?
       build_commands << "echo 'gem \"ruby-ll\", \"2.1.2\",                         require: false' >> #{mod_name}/Gemfile"
-      build_commands << "echo 'gem \"byebug\", \"9.0.6\",                          require: false' >> #{mod_name}/Gemfile"
+      build_commands << "echo 'gem \"byebug\", \"~> 11.0\",                          require: false' >> #{mod_name}/Gemfile"
       build_commands << "echo 'gem \"oga\", \"2.15\",                              require: false' >> #{mod_name}/Gemfile"
     end
 
@@ -153,13 +153,13 @@ component "pdk-templates" do |pkg, settings, platform|
       build_commands << "echo 'gem \"puppet_litmus\",                             require: false' >> #{local_mod_name}/Gemfile" unless rubyver.start_with?('2.1')
       ruby_minor = local_settings[:ruby_version].split('.')[0..1].join('.')
       build_commands << "echo 'gem \"puppet-module-posix-system-r#{ruby_minor}\", platform: [:ruby]' >> #{local_mod_name}/Gemfile"
-      build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{local_mod_name}/Gemfile"
+      #build_commands << "echo 'gem \"puppet-module-win-system-r#{ruby_minor}\", platform: [:mswin, :mingw, :x64_mingw]' >> #{local_mod_name}/Gemfile"
       build_commands << "echo 'gem \"nokogiri\", \"<= #{settings[:nokogiri_version]}\",                     require: false' >> #{local_mod_name}/Gemfile"
 
       # Add some Beaker dependencies for Linux
       unless platform.is_windows?
         build_commands << "echo 'gem \"ruby-ll\", \"2.1.2\",                         require: false' >> #{local_mod_name}/Gemfile"
-        build_commands << "echo 'gem \"byebug\", \"9.0.6\",                          require: false' >> #{local_mod_name}/Gemfile"
+        build_commands << "echo 'gem \"byebug\", \"~> 11.0\",                        require: false' >> #{local_mod_name}/Gemfile"
         build_commands << "echo 'gem \"oga\", \"2.15\",                              require: false' >> #{local_mod_name}/Gemfile"
       end
 
