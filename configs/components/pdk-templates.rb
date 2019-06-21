@@ -159,7 +159,7 @@ component "pdk-templates" do |pkg, settings, platform|
       # Add some Beaker dependencies for Linux
       unless platform.is_windows?
         build_commands << "echo 'gem \"ruby-ll\", \"2.1.2\",                         require: false' >> #{local_mod_name}/Gemfile"
-        build_commands << "echo 'gem \"byebug\", \"~> 11.0\",                        require: false' >> #{local_mod_name}/Gemfile"
+        build_commands << "echo 'gem \"byebug\", \"9.0.6\",                        require: false' >> #{local_mod_name}/Gemfile"
         build_commands << "echo 'gem \"oga\", \"2.15\",                              require: false' >> #{local_mod_name}/Gemfile"
       end
 
