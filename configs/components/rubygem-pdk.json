@@ -1,5 +1,5 @@
 {
-  "ref": "0edc07fcd9248c95aa4530c489230284ddf25432",
+  "ref": "641_pdk_bundle_passthru",
   "version": "1.11.2.pre",
-  "url": "https://github.com/puppetlabs/pdk"
+  "url": "https://github.com/scotje/pdk"
 }
