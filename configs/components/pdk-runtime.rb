@@ -1,7 +1,10 @@
 component 'pdk-runtime' do |pkg, settings, platform|
-  pkg.version settings[:pdk_runtime_version]
-  pkg.sha1sum "http://builds.puppetlabs.lan/puppet-runtime/#{pkg.get_version}/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz.sha1"
-  pkg.url "http://builds.puppetlabs.lan/puppet-runtime/#{pkg.get_version}/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz"
+  #pkg.version settings[:pdk_runtime_version]
+  #pkg.sha1sum "http://builds.puppetlabs.lan/puppet-runtime/#{pkg.get_version}/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz.sha1"
+  #pkg.url "http://builds.puppetlabs.lan/puppet-runtime/#{pkg.get_version}/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz"
+  pkg.version "201804040.604.ged404fa"
+  pkg.sha1sum "http://builds.delivery.puppetlabs.net/puppet-runtime/ed404fae7588bbadab1b64d29dd6454d719ebefd/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz.sha1"
+  pkg.url "http://builds.delivery.puppetlabs.net/puppet-runtime/ed404fae7588bbadab1b64d29dd6454d719ebefd/artifacts/#{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz"
   pkg.install_only true
 
   install_commands = ["gunzip -c #{pkg.get_name}-#{pkg.get_version}.#{platform.name}.tar.gz | tar -C / -xf -"]
